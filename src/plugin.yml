@@ -1,6 +1,6 @@
 main: me.mgone.bossbarapi.BossbarAPI
 name: BossbarAPI
-version: 2.1
+version: 2.0
 authors: [craftzone, mgone]
 description: Api for boss message using Enderdragon or/and Wither
 commands:
