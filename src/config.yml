@@ -1,0 +1,20 @@
+# BossbarAPI API 1.0 by mgone2010
+#Don't change configversion
+configversion: 2.1
+#keep true if you will use as standalone and show bar message with AutoMessage at the bottom
+#set false if it's dependency of other plugin using this api
+EnableAutoMessage: true
+#time to wait in between announcements (in seconds)!):
+interval: 5
+#Bypass 64 characters in the message, this is experimental
+#but it's seem work perfectly.
+Bypass64CharLimit: true
+# Messages! Color and icon(to do) are supported.
+#EnableAutoMessage must be true to show this auto message
+messages:
+  0:
+    message: '&3BossBarAPI is best plugin ever!'
+  1:
+    message: '&bWelcom %player%!'
+  2:
+    message: '&6&lhello &aworld, &fBossBarAPI 2.1 by mgone2010'
