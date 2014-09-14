@@ -1,17 +1,19 @@
 package me.mgone.bossbarapi;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-
 
 
 /**
@@ -47,6 +49,13 @@ public class BossbarAPI extends JavaPlugin implements Listener {
 		  plugin = this;
 		  Bukkit.getConsoleSender().sendMessage("§e§lBossbarAPI Enabled...");
 		  DragonBarTask();
+		  //new AutoMessage(this);
+		  
+		  try {
+			  Metrics metrics = new Metrics(this); metrics.start();
+			  } catch (IOException e) { // Failed to submit the stats :-(
+			  System.out.println("Error Submitting stats!");
+			  }
 	  }
 		  
 		  
@@ -66,6 +75,7 @@ public class BossbarAPI extends JavaPlugin implements Listener {
 	  public void reloadConfig()
 	  {
 	    super.reloadConfig();
+	    new AutoMessage(this);
 	    
 	  }
 	  
@@ -82,7 +92,7 @@ public class BossbarAPI extends JavaPlugin implements Listener {
                         	if(!cooldownsdragonbar.containsKey(p))	{ 
                         	  
                          if(playerdragonbartask.containsKey(p) && !healthdragonbartask.containsKey(p))	{ setBarDragon(p, playerdragonbartask.get(p)); }
-                         else if(playerdragonbartask.containsKey(p) && healthdragonbartask.containsKey(p))	{ setBarDragon(p, playerdragonbartask.get(p), healthdragonbartask.get(p)); }
+                         else if(playerdragonbartask.containsKey(p) && healthdragonbartask.containsKey(p))	{ setBarDragonHealth(p, playerdragonbartask.get(p), healthdragonbartask.get(p)); }
                          
                         	                 }
                         	
@@ -95,7 +105,7 @@ public class BossbarAPI extends JavaPlugin implements Listener {
                             
                           }
                   }
-          }.runTaskTimer(this, 0, 20); 
+          }.runTaskTimer(this, 0, 40); 
           
           
           
@@ -142,8 +152,8 @@ public class BossbarAPI extends JavaPlugin implements Listener {
 		}
 	
 	  
-		public static void setBarDragon(Player p, String text, float health) {
-			if(health<0 || health >100) { health = 100; text = "health must be between 0 and 100 it's a %";}
+		public static void setBarDragonHealth(Player p, String text, float health) {
+			if(health<=0 || health >100) { health = 100; text = "health must be between 1 and 100 it's a %";}
 			playerdragonbartask.put(p, text);
 			healthdragonbartask.put(p, (health/100)*200);
 			FDragon.setBossBar(p, text, health);
@@ -156,7 +166,6 @@ public class BossbarAPI extends JavaPlugin implements Listener {
 			int unite = Math.round(200/starttimerdragonbar.get(p));
 			FDragon.setBossBar(p, text, unite*timer);
 		
-			p.sendMessage(String.valueOf(unite*timer));
 		}
 		
 		
@@ -184,7 +193,7 @@ public class BossbarAPI extends JavaPlugin implements Listener {
 	
 	  
 		public static void setBarWitherHealth(Player p, String text, float health) {
-			if(health<0 || health >100) { health = 100; text = "health must be between 0 and 100 it's a %";}
+			if(health<=0 || health >100) { health = 100; text = "health must be between 1 and 100 it's a %";}
 			playerwitherbartask.put(p, text);
 			healthwitherbartask.put(p, (health/100)*300);
 			FWither.setBossBar(p, text, health);
@@ -197,7 +206,6 @@ public class BossbarAPI extends JavaPlugin implements Listener {
 			int unite = Math.round(300/starttimerwitherbar.get(p));
 			FWither.setBossBar(p, text, unite*timer);
 		
-			p.sendMessage(String.valueOf(unite*timer));
 		}
 		
 		
@@ -216,6 +224,13 @@ public class BossbarAPI extends JavaPlugin implements Listener {
 		
 		
 		
+		public static boolean McVersion(Player p) {
+			CraftPlayer p1 = (CraftPlayer) p;
+			if (p1.getHandle().playerConnection.networkManager.getVersion() >= 47) return true;
+			else return false;
+		}
+		
+		
 		public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
 		  {
 			
@@ -223,35 +238,33 @@ public class BossbarAPI extends JavaPlugin implements Listener {
 		    if ((sender instanceof Player))
 		    {  Player p = (Player)sender;
 		    
-		    if (cmd.getName().equalsIgnoreCase("bossbar"))
+		    if (cmd.getName().equalsIgnoreCase("Bossbar"))
 		    {
-		    	setBarWither(p, "§6§lhello §aworld");
-		    	setBarDragon(p, "§6§lhello §aworld");
-		    }
-		    
-		    if (cmd.getName().equalsIgnoreCase("bossbar2"))
-		    {
-		    	setBarWitherHealth(p, "§6§lhello §aworld", 0);
-		    }
-		    
-		    if (cmd.getName().equalsIgnoreCase("bossbar3"))
-		    {
-		    	setBarWitherTimer(p, "§6§lhello §aworld", 100);
-		    	setBarDragonTimer(p, "§6§lhello §aworld", 100);
-		    }
-		    
-		    
-		    if (cmd.getName().equalsIgnoreCase("removebossbar"))
-		    {
-		    	removeBarWither(p);
-		    	removeBarDragon(p);
-		    }
+		    	
+		    	
+
+		    	if (args.length == 1) {
+		    	
+		    	
+		    	if (args[0].equalsIgnoreCase("reload")) {
+		    		
+
+		    	if(p.hasPermission("bossbarapi.reload")) {
+		        	reloadConfig();
+		            p.sendMessage(ChatColor.GOLD + "[BossbarAPI] " + ChatColor.GRAY + "You have reloaded config."); }
+		        	else  p.sendMessage(ChatColor.GOLD + "[BossbarAPI] " + ChatColor.GRAY + "You don't have permission ;).");
+		    	
+		    	} //fin reload
+		    	
+		    	} else p.sendMessage(ChatColor.GOLD + "BossbarAPI " + ChatColor.GRAY + "V2.1 \n" + ChatColor.LIGHT_PURPLE + "Plugin By " + ChatColor.AQUA + "mgone2010");
+
 		    
 		    
 		    
 		    
 		    }
 			
+		    } 
 			
 		    return false;
 			
@@ -259,7 +272,7 @@ public class BossbarAPI extends JavaPlugin implements Listener {
 		  }
 		   
 		 
-		    
+		     
 
 
 }
