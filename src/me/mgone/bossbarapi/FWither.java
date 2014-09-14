@@ -6,6 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -91,35 +92,53 @@ public class FWither {
     
     public static void setBossBartext(Player p, String text) {
         playerTextWither.put(p.getName(), text);
+	    int xr = ThreadLocalRandom.current().nextInt(-3,3);
+	    int xr2 = ThreadLocalRandom.current().nextInt(-3,3);
+	    
         try {
-                Object nms_wither = getWither(p);
-                setLocation.invoke(nms_wither, getPlayerLoc(p).getX(), getPlayerLoc(p).getY(), getPlayerLoc(p).getZ(), 0F, 0F);
-                setCustomName.invoke(nms_wither,text);
-                setHealth.invoke(nms_wither,300);
-                setInvisible.invoke(nms_wither,false);
-                setInvisible.invoke(nms_wither,true);
-                changeWatcher(nms_wither, text);
-                Object nms_packet = packetPlayOutSpawnEntityLiving.newInstance(nms_wither);
-                Object nms_player = getPlayerHandle.invoke(p);
-                Object nms_connection = playerConnection.get(nms_player);
-                sendPacket.invoke(nms_connection, nms_packet);
-        } catch (Exception e) {
-                e.printStackTrace();
-        }
+            Object nms_wither = getWither(p);
+            setLocation.invoke(nms_wither, getPlayerLoc(p).getX()+xr, getPlayerLoc(p).getY(), getPlayerLoc(p).getZ()+xr2, 0F, 0F);
+            setCustomName.invoke(nms_wither,text);
+            setHealth.invoke(nms_wither,300);
+            setInvisible.invoke(nms_wither,true);
+            changeWatcher(nms_wither, text);
+            Object nms_packet = packetPlayOutSpawnEntityLiving.newInstance(nms_wither);
+            Object nms_player = getPlayerHandle.invoke(p);
+            Object nms_connection = playerConnection.get(nms_player);
+            sendPacket.invoke(nms_connection, nms_packet);
+    } catch (Exception e) {
+            e.printStackTrace();
+    }
+    
+    
+    try {
+        Object nms_wither = getWither2(p);
+        setLocation.invoke(nms_wither, getPlayerLoc(p).getX()+xr2, p.getLocation().getY()-10, getPlayerLoc(p).getZ()+xr, 0F, 0F);
+        setCustomName.invoke(nms_wither,text);
+        setHealth.invoke(nms_wither,300);
+        setInvisible.invoke(nms_wither,true);
+        changeWatcher(nms_wither, text);
+        Object nms_packet = packetPlayOutSpawnEntityLiving.newInstance(nms_wither);
+        Object nms_player = getPlayerHandle.invoke(p);
+        Object nms_connection = playerConnection.get(nms_player);
+        sendPacket.invoke(nms_connection, nms_packet);
+} catch (Exception e) {
+        e.printStackTrace();
+}
 }
     
     
     public static void setBossBar(Player p, String text, float vie) {
             playerTextWither.put(p.getName(), text);
-
+    	    int xr = ThreadLocalRandom.current().nextInt(0,2);
+    	    int xr2 = ThreadLocalRandom.current().nextInt(0,2);
 
             try {
                     Object nms_wither = getWither(p);
-                    setLocation.invoke(nms_wither, getPlayerLoc(p).getX(), getPlayerLoc(p).getY(), getPlayerLoc(p).getZ(), 0F, 0F);
+                    setLocation.invoke(nms_wither, getPlayerLoc(p).getX()+xr, getPlayerLoc(p).getY(), getPlayerLoc(p).getZ()+xr2, 0F, 0F);
                     setCustomName.invoke(nms_wither,text);
                     setHealth.invoke(nms_wither,vie);
-                    setInvisible.invoke(nms_wither,false);
-                    setInvisible.invoke(nms_wither,false);
+                    setInvisible.invoke(nms_wither,true);
                     changeWatcher(nms_wither, text);
                     Object nms_packet = packetPlayOutSpawnEntityLiving.newInstance(nms_wither);
                     Object nms_player = getPlayerHandle.invoke(p);
@@ -132,11 +151,10 @@ public class FWither {
             
             try {
                 Object nms_wither = getWither2(p);
-                setLocation.invoke(nms_wither, getPlayerLoc(p).getX(), p.getLocation().getY()-10, getPlayerLoc(p).getZ(), 0F, 0F);
+                setLocation.invoke(nms_wither, getPlayerLoc(p).getX()+xr2, p.getLocation().getY()-10, getPlayerLoc(p).getZ()+xr, 0F, 0F);
                 setCustomName.invoke(nms_wither,text);
                 setHealth.invoke(nms_wither,vie);
-                setInvisible.invoke(nms_wither,false);
-                setInvisible.invoke(nms_wither,false);
+                setInvisible.invoke(nms_wither,true);
                 changeWatcher(nms_wither, text);
                 Object nms_packet = packetPlayOutSpawnEntityLiving.newInstance(nms_wither);
                 Object nms_player = getPlayerHandle.invoke(p);
