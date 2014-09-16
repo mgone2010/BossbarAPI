@@ -10,7 +10,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerKickEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -140,7 +144,25 @@ public class BossbarAPI extends JavaPlugin implements Listener {
           
           
   }
-	  
+      
+      
+      
+     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+  	public void PlayerLoggout(PlayerQuitEvent event) {
+  		Player p = event.getPlayer();
+  		removeBar(p);
+  		FDragon.removehorligneD(p);
+  		FWither.removehorligneW(p);
+  	}
+
+  	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+  	public void onPlayerKick(PlayerKickEvent event) {
+  		Player p = event.getPlayer();
+  		removeBar(p);
+  		FDragon.removehorligneD(p);
+  		FWither.removehorligneW(p);
+  	}
+
       
       //dragon
 	  
@@ -182,6 +204,12 @@ public class BossbarAPI extends JavaPlugin implements Listener {
 		}
 		
 		
+		public static String getMessageDragon(Player p) {	
+			if(playerdragonbartask.containsKey(p)) return playerdragonbartask.get(p);
+			else return " ";
+		}
+		
+		
 		
 		
 		//wither
@@ -219,6 +247,93 @@ public class BossbarAPI extends JavaPlugin implements Listener {
 		
 		public static boolean hasBarWither(Player p) {	
 			return playerwitherbartask.get(p) != null;	
+		}
+		
+		
+		public static String getMessageWither(Player p) {	
+			if(playerwitherbartask.containsKey(p)) return playerwitherbartask.get(p);
+			else return " ";
+		}
+		
+		
+		
+		
+		
+		//both
+		
+		public static void setBar(Player p, String text) {
+			if(McVersion(p)) {
+			playerwitherbartask.put(p, text);
+			FWither.setBossBartext(p, text); }
+			
+			playerdragonbartask.put(p, text);
+			FDragon.setBossBartext(p, text);
+		}
+	
+	  
+		public static void setBarHealth(Player p, String text, float health) {
+			if(health<=0 || health >100) { health = 100; text = "health must be between 1 and 100 it's a %";}
+			if(McVersion(p)) {
+			playerwitherbartask.put(p, text);
+			healthwitherbartask.put(p, (health/100)*300);
+			FWither.setBossBar(p, text, health); }
+			
+			playerdragonbartask.put(p, text);
+			healthdragonbartask.put(p, (health/100)*200);
+			FDragon.setBossBar(p, text, health);
+		}
+		
+		public static void setBarTimer(Player p, String text, int timer) {
+			if(McVersion(p)) {
+			playerwitherbartask.put(p, text);
+			cooldownswitherbar.put(p, timer);
+			if(!starttimerwitherbar.containsKey(p)) starttimerwitherbar.put(p, timer);
+			int unite = Math.round(300/starttimerwitherbar.get(p));
+			FWither.setBossBar(p, text, unite*timer); }
+			
+			playerdragonbartask.put(p, text);
+			cooldownsdragonbar.put(p, timer);
+			if(!starttimerdragonbar.containsKey(p)) starttimerdragonbar.put(p, timer);
+			int unite1 = Math.round(200/starttimerdragonbar.get(p));
+			FDragon.setBossBar(p, text, unite1*timer);
+		
+		}
+		
+		
+		public static void removeBar(Player p) {
+			if(McVersion(p)) {
+			playerwitherbartask.remove(p);
+			healthwitherbartask.remove(p);
+			cooldownswitherbar.remove(p);
+			starttimerwitherbar.remove(p);
+			FWither.removeBossBar(p); }
+			
+			playerdragonbartask.remove(p);
+			healthdragonbartask.remove(p);
+			cooldownsdragonbar.remove(p);
+			starttimerdragonbar.remove(p);
+			FDragon.removeBossBar(p);
+		}
+		
+		public static boolean hasBar(Player p) {	
+			
+			if(McVersion(p)) {
+			
+			if(playerwitherbartask.containsKey(p) && playerdragonbartask.containsKey(p))
+				return true;
+			else return false; }
+			
+			
+			else {
+				
+				return playerdragonbartask.get(p) != null;	
+			}
+		}
+		
+		
+		public static String getMessage(Player p) {	
+			if(playerdragonbartask.containsKey(p)) return playerdragonbartask.get(p);
+			else return " ";
 		}
 		
 		
