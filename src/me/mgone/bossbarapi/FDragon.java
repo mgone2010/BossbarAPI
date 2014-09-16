@@ -135,7 +135,7 @@ public class FDragon {
     }
     
     
-	public void removehorligneD(Player p) {
+	public static void removehorligneD(Player p) {
 			playerDragons.remove(p.getName());
 			playerTextDragon.remove(p.getName());	
 		}
