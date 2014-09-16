@@ -97,7 +97,7 @@ public class FWither {
 	    
         try {
             Object nms_wither = getWither(p);
-            setLocation.invoke(nms_wither, getPlayerLoc(p).getX()+xr, getPlayerLoc(p).getY(), getPlayerLoc(p).getZ()+xr2, 0F, 0F);
+            setLocation.invoke(nms_wither, getPlayerLoc(p).getX()+xr, getPlayerLoc(p).getY()-3, getPlayerLoc(p).getZ()+xr2, 0F, 0F);
             setCustomName.invoke(nms_wither,text);
             setHealth.invoke(nms_wither,300);
             setInvisible.invoke(nms_wither,true);
@@ -111,7 +111,7 @@ public class FWither {
     }
     
     
-    try {
+ /*   try {
         Object nms_wither = getWither2(p);
         setLocation.invoke(nms_wither, getPlayerLoc(p).getX()+xr2, p.getLocation().getY()-10, getPlayerLoc(p).getZ()+xr, 0F, 0F);
         setCustomName.invoke(nms_wither,text);
@@ -124,7 +124,7 @@ public class FWither {
         sendPacket.invoke(nms_connection, nms_packet);
 } catch (Exception e) {
         e.printStackTrace();
-}
+} */
 }
     
     
@@ -135,7 +135,7 @@ public class FWither {
 
             try {
                     Object nms_wither = getWither(p);
-                    setLocation.invoke(nms_wither, getPlayerLoc(p).getX()+xr, getPlayerLoc(p).getY(), getPlayerLoc(p).getZ()+xr2, 0F, 0F);
+                    setLocation.invoke(nms_wither, getPlayerLoc(p).getX()+xr, getPlayerLoc(p).getY()-3, getPlayerLoc(p).getZ()+xr2, 0F, 0F);
                     setCustomName.invoke(nms_wither,text);
                     setHealth.invoke(nms_wither,vie);
                     setInvisible.invoke(nms_wither,true);
@@ -149,7 +149,7 @@ public class FWither {
             }
             
             
-            try {
+        /*    try {
                 Object nms_wither = getWither2(p);
                 setLocation.invoke(nms_wither, getPlayerLoc(p).getX()+xr2, p.getLocation().getY()-10, getPlayerLoc(p).getZ()+xr, 0F, 0F);
                 setCustomName.invoke(nms_wither,text);
@@ -162,7 +162,7 @@ public class FWither {
                 sendPacket.invoke(nms_connection, nms_packet);
         } catch (Exception e) {
                 e.printStackTrace();
-        }
+        } */
             
     }
     
@@ -189,7 +189,7 @@ public class FWither {
 
     
     
-	public void removehorligneW(Player p) {
+	public static void removehorligneW(Player p) {
 			playerWithers.remove(p.getName());
 			playerTextWither.remove(p.getName());	
 		}
