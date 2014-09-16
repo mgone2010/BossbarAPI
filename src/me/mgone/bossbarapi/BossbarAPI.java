@@ -148,7 +148,7 @@ public class BossbarAPI extends JavaPlugin implements Listener {
       
       
      @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  	public void PlayerLoggout(PlayerQuitEvent event) {
+  	public void PlayerQuit(PlayerQuitEvent event) {
   		Player p = event.getPlayer();
   		removeBar(p);
   		FDragon.removehorligneD(p);
@@ -156,7 +156,7 @@ public class BossbarAPI extends JavaPlugin implements Listener {
   	}
 
   	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-  	public void onPlayerKick(PlayerKickEvent event) {
+  	public void PlayerKick(PlayerKickEvent event) {
   		Player p = event.getPlayer();
   		removeBar(p);
   		FDragon.removehorligneD(p);
