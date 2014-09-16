@@ -33,15 +33,15 @@ public class BossbarAPI extends JavaPlugin implements Listener {
 	
 	
 	public static Plugin plugin;
-	public static Map<Player, String> playerdragonbartask = new HashMap<Player, String>();
-	public static Map<Player, Float> healthdragonbartask = new HashMap<Player, Float>();
-	public static Map<Player, Integer> cooldownsdragonbar= new HashMap<Player, Integer>();
-	public static Map<Player, Integer> starttimerdragonbar= new HashMap<Player, Integer>();
+	public static WeakHashMap<Player, String> playerdragonbartask = new WeakHashMap<Player, String>();
+	public static WeakHashMap<Player, Float> healthdragonbartask = new WeakHashMap<Player, Float>();
+	public static WeakHashMap<Player, Integer> cooldownsdragonbar= new WeakHashMap<Player, Integer>();
+	public static WeakHashMap<Player, Integer> starttimerdragonbar= new WeakHashMap<Player, Integer>();
 	
-	public static Map<Player, String> playerwitherbartask = new HashMap<Player, String>();
-	public static Map<Player, Float> healthwitherbartask = new HashMap<Player, Float>();
-	public static Map<Player, Integer> cooldownswitherbar= new HashMap<Player, Integer>();
-	public static Map<Player, Integer> starttimerwitherbar= new HashMap<Player, Integer>();
+	public static WeakHashMap<Player, String> playerwitherbartask = new WeakHashMap<Player, String>();
+	public static WeakHashMap<Player, Float> healthwitherbartask = new WeakHashMap<Player, Float>();
+	public static WeakHashMap<Player, Integer> cooldownswitherbar= new WeakHashMap<Player, Integer>();
+	public static WeakHashMap<Player, Integer> starttimerwitherbar= new WeakHashMap<Player, Integer>();
 	
 	  public void onEnable()
 	  {   
